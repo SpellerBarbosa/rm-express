@@ -2,4 +2,15 @@
 
 @theme{
     --font-obitron: 'Obitron', 'sans-serif';
+
+    --animate-regressive: regressive 2s ease-in-out;
+
+    @keyframes regressive {
+        0%{
+            width: 100%;
+        }
+        100%{
+            width: 0%;
+        }
+    }
 }
