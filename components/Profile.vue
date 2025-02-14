@@ -9,6 +9,7 @@ const token = useCookie('token');
 const user = ref("");
 const role = ref("");
 
+
 watchEffect(async()=>{
     const response = await fetch(fixedUrls.secureUrl,{
         method:"POST",
@@ -25,7 +26,7 @@ watchEffect(async()=>{
     <section>
         <article>
             <h1>{{ user }}</h1>
-            
+
         </article>
     </section>
 </template>
