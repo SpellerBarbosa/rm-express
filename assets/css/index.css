@@ -5,12 +5,39 @@
 
     --animate-regressive: regressive 2s ease-in-out;
 
+    --animate-menuOpen: menuOpen .5s ease-in;
+
+    --animate-menuClosed: menuClosed .5s ease-in;
+
+    --breakpoint-sm360: 20rem;
+
     @keyframes regressive {
         0%{
             width: 100%;
         }
         100%{
             width: 0%;
+        }
+    }
+
+    @keyframes menuOpen {
+        0%{
+            width: 0%;
+            opacity: 0;
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+
+    @keyframes menuClosed {
+        0%{
+            width: 80%;
+            opacity: 1;
+        }
+        100%{
+            width: 0%;
+            opacity: 0;
         }
     }
 }
