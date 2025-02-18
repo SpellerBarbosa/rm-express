@@ -1,6 +1,6 @@
 <script setup>
 import Error from '~/components/error.vue';
-import Success from '~/components/success.vue';
+import Success from '~/components/Success.vue';
 import { useUrlsStore } from '~/store/useUrlsStore';
 import { ref } from 'vue';
 
