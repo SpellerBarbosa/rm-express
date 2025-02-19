@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import { apiEndPoints, getApiUrl } from '~/utils/ApiEndpoints.js';
-import Error from '~/components/Error.vue';
+import Error from '~/components/error.vue';
 import success from '~/components/success.vue';
+import { useUserStore } from '~/store/useUserStore';
 
 const date = new Date;
 const day = date.getDate();
@@ -22,6 +23,9 @@ const userId = ref("");
 const msgError = ref("");
 const msgSucess = ref("");
 const requestUrl = getApiUrl(apiEndPoints.REQUEST);
+const useUser = useUserStore();
+userId.value = useUser.user_id
+applicant.value = useUser.user_name
 
 const request_service = async () => {
     if (!client.value) {
@@ -49,21 +53,32 @@ const request_service = async () => {
         const response = await fetch(requestUrl,{
             method:"POST",
             headers:{
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
-            body:{
+            body:JSON.stringify({
                 date: date_request,
                 client: client.value.toLowerCase().trim(),
                 type_service: type_service.value.toLowerCase().trim(),
                 description_service: description_service.value.toLowerCase().trim(),
                 userId: userId.value,
-            }
+            })
         })
 
         const data = await response.json();
 
         if(response.ok){
-
+            msgSucess.value = data.msg;
+            type_service.value = "";
+            description_service.value ="";
+            client.value = "";
+            setTimeout(() => {
+                msgSucess.value = ""
+            }, 2000);
+        }else{
+            msgError.value = data.msg;
+            setTimeout(() => {
+                msgError.value = ""
+            }, 2000);
         }
     } catch (error) {
         
@@ -72,7 +87,7 @@ const request_service = async () => {
 
 </script>
 <template>
-    <section class="w-screen h-screen bg-gray-400 flex flex-col items-center shadow-xl">
+    <section class="w-screen h-screen bg-gray-400 flex flex-col items-center shadow-xl lg:w-[70%] lg:ml-[30%] xl:w-[75%] xl:ml-[25%]">
         <section class="w-full h-[10vh] bg-gray-700 grid place-items-center text-white">
             <h1 class="uppercase text-2xl font-bold">r.m express</h1>
         </section>

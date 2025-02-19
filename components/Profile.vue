@@ -1,10 +1,11 @@
 <script setup>
 import { ref } from 'vue';
 import { watchEffect } from 'vue';
-import { useUrlsStore } from '~/store/useUrlsStore';
+import { useUserStore } from '~/store/useUserStore';
+import { apiEndPoints, getApiUrl } from '#imports';
 
-const useUrl = useUrlsStore();
-const fixedUrls = useUrl.getFixesUrls;
+
+const urlSecure = getApiUrl(apiEndPoints.SECURE);
 const token = useCookie('token');
 const user = ref("");
 const role = ref("");
@@ -15,26 +16,26 @@ const submenu = ref({
     cadastrar: false,
     consultar: false
 });
+const useUser = useUserStore();
 
 
-// watchEffect(async () => {
-//     const response = await fetch(fixedUrls.secureUrl, {
-//         method: "POST",
-//         headers: {
-//             "Authorization": `Bearer ${token.value}`
-//         }
-//     });
+watchEffect(async () => {
+    const response = await fetch(urlSecure, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token.value}`
+        }
+    });
 
-//     const data = await response.json();
+    const data = await response.json();
 
-//     console.log(data)
-
-//     if (response.ok) {
-//         user.value = data.token.user
-//         sector.value = data.token.sector
-//         role.value = data.token.role
-//     }
-// })
+    if (response.ok) {
+        user.value = data.token.user
+        sector.value = data.token.sector
+        role.value = data.token.role
+        useUser.setUserInfo(data.token.id, data.token.user, data.token.role, data.token.sector);
+    }
+})
 
 const toggleMenu = () => {
     menu.value = !menu.value
